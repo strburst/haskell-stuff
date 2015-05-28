@@ -1,3 +1,6 @@
+-- Elementary Haskell/List processing
+-- https://en.wikibooks.org/wiki/Haskell/List_processing
+
 -- Recursive definition of and
 andR :: [Bool] -> Bool
 -- andR (x:xs) = if x then andR xs else False

@@ -1,3 +1,6 @@
+-- Intermediate Haskell/Other data structures
+-- https://en.wikibooks.org/wiki/Haskell/Other_data_structures
+
 data Tree a = Leaf a | Branch (Tree a) (Tree a) deriving (Show)
 
 tree = Branch (Branch (Leaf 1) (Leaf 2)) (Leaf 3)

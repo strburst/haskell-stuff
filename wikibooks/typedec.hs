@@ -1,3 +1,6 @@
+-- Elementary Haskell/Type declarations
+-- https://en.wikibooks.org/wiki/Haskell/Type_declarations
+
 data Date = Date Int Int Int -- year month day
 type Name = String
 

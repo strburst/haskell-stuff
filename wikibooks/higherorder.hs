@@ -1,3 +1,6 @@
+-- Elementary Haskell/Higher-order functions and currying
+-- https://en.wikibooks.org/wiki/Haskell/Higher-order_functions_and_currying
+
 import Data.Char
 
 quicksort :: (a -> a -> Ordering) -> [a] -> [a]
