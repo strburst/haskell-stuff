@@ -14,17 +14,17 @@ data BinTree a = BinEmpty
                | BinBranch a (BinTree a) (BinTree a)
                deriving (Show)
 
-binTree = BinBranch 10
+binTree1 = BinBranch 2
+    (BinBranch 1 BinEmpty BinEmpty)
+    (BinBranch 3 BinEmpty BinEmpty)
+
+binTree2 = BinBranch 10
     (BinBranch 5
         (BinBranch 4 BinEmpty BinEmpty)
         (BinBranch 6 BinEmpty BinEmpty))
     (BinBranch 15
         (BinBranch 14 BinEmpty BinEmpty)
         BinEmpty)
-
-binTree2 = BinBranch 2
-    (BinBranch 1 BinEmpty BinEmpty)
-    (BinBranch 3 BinEmpty BinEmpty)
 
 mapBinTree :: (a -> b) -> BinTree a -> BinTree b
 mapBinTree f BinEmpty                 = BinEmpty
@@ -36,11 +36,11 @@ preorder (BinBranch elem left right) = elem : ((preorder left) ++ (preorder righ
 
 inorder :: BinTree a -> [a]
 inorder BinEmpty                    = []
-inorder (BinBranch elem left right) = (preorder left) ++ [elem] ++ (preorder right)
+inorder (BinBranch elem left right) = (inorder left) ++ [elem] ++ (inorder right)
 
 postorder :: BinTree a -> [a]
 postorder BinEmpty                    = []
-postorder (BinBranch elem left right) = (preorder left) ++ (preorder right) ++ [elem]
+postorder (BinBranch elem left right) = (postorder left) ++ (postorder right) ++ [elem]
 
 everyB :: (a -> Bool) -> BinTree a -> Bool
 everyB f BinEmpty                    = True
@@ -62,15 +62,29 @@ data Weird a b = First a
                | Fourth (Weird a b)
                deriving (Show)
 
-mapWierd :: (a -> c) -> (b -> d) -> Weird a b -> Weird c d
-mapWierd f g wierd = case wierd of
+weirdthing = Fourth $ Third [('a', 5), ('b', 7)]
+
+mapWeird1 :: (a -> c) -> (b -> d) -> Weird a b -> Weird c d
+mapWeird1 f g weird = case weird of
     First item    -> First (f item)
     Second item   -> Second (g item)
-    -- Third list    -> Third (mapfgList list)
-    Fourth weird  -> Fourth (mapWierd f g weird)
-    -- where mapfgList [] = []
-    --       mapfgList ((itemA, itemB):etc) = (f itemA, g itemB) : mapfgList etc
-    -- Third list    -> Third (zip (map f listA) (map g listB))
-    --     where listA = fst (unzip list); listB = snd (unzip list)
-    Third ((itemA, itemB):etc) -> Third ((f itemA, g itemB) : ((\(Third list) -> list) (mapWierd f g (Third etc))))
+    Third list    -> Third (mapfgList list)
+    Fourth weird  -> Fourth (mapWeird1 f g weird)
+    where mapfgList [] = []
+          mapfgList ((itemA, itemB):etc) = (f itemA, g itemB) : mapfgList etc
+
+mapWeird2 :: (a -> c) -> (b -> d) -> Weird a b -> Weird c d
+mapWeird2 f g weird = case weird of
+    First item    -> First (f item)
+    Second item   -> Second (g item)
+    Third list    -> Third (zip (map f listA) (map g listB))
+        where listA = fst (unzip list); listB = snd (unzip list)
+    Fourth weird  -> Fourth (mapWeird2 f g weird)
+
+mapWeird3 :: (a -> c) -> (b -> d) -> Weird a b -> Weird c d
+mapWeird3 f g weird = case weird of
+    First item    -> First (f item)
+    Second item   -> Second (g item)
+    Third ((itemA, itemB):etc) -> Third ((f itemA, g itemB) : ((\(Third list) -> list) (mapWeird3 f g (Third etc))))
     Third [] -> Third []
+    Fourth weird  -> Fourth (mapWeird3 f g weird)
