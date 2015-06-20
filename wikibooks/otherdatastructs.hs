@@ -58,6 +58,13 @@ everyB :: (a -> Bool) -> BinTree a -> Bool
 everyB f BinEmpty                    = True
 everyB f (BinBranch elem left right) = (f elem) && everyB f left && everyB f right
 
+addBinTree :: (Ord a) => a -> BinTree a -> BinTree a
+addBinTree item (BinBranch root left right)
+    | item < root = BinBranch root (addBinTree item left) right
+    | item > root = BinBranch root left (addBinTree item right)
+    | otherwise   = BinBranch root left right
+addBinTree item BinEmpty = BinBranch item BinEmpty BinEmpty
+
 -- Test if a binary tree is a binary search tree, that is, the data in the left
 -- branch is less than the data in the current node, and the data in the right
 -- branch is greater.
@@ -105,8 +112,8 @@ mapWeird3 f g weird = case weird of
     Third [] -> Third []
     Fourth weird  -> Fourth (mapWeird3 f g weird)
 
-instance Functor Weird where
-    fmap = mapWeird1
+-- instance Functor Weird where
+--     fmap = mapWeird1
 
 -- foldWeird :: (a -> c -> c) -> (b -> c -> c) -> ((a, b) -> c) -> (c -> c) -> Weird a b -> c
 -- foldWeird f g h i accum (Fourth item) = i (foldWeird f g h i accum item)
