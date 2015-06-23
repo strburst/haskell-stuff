@@ -38,32 +38,10 @@ mapBinTree f (BinBranch x left right) = BinBranch (f x) (mapBinTree f left) (map
 instance Functor BinTree where
     fmap = mapBinTree
 
--- Compute the preorder traversal of a given binary tree
-preorder :: BinTree a -> [a]
-preorder BinEmpty                    = []
-preorder (BinBranch elem left right) = elem : ((preorder left) ++ (preorder right))
-
--- Compute the inorder traversal of a given binary tree
-inorder :: BinTree a -> [a]
-inorder BinEmpty                    = []
-inorder (BinBranch elem left right) = (inorder left) ++ [elem] ++ (inorder right)
-
--- Compute the postorder traversal of a given binary tree
-postorder :: BinTree a -> [a]
-postorder BinEmpty                    = []
-postorder (BinBranch elem left right) = (postorder left) ++ (postorder right) ++ [elem]
-
 -- Test if every element in a binary tree matches the given predicate
 everyB :: (a -> Bool) -> BinTree a -> Bool
 everyB f BinEmpty                    = True
 everyB f (BinBranch elem left right) = (f elem) && everyB f left && everyB f right
-
-addBinTree :: (Ord a) => a -> BinTree a -> BinTree a
-addBinTree item (BinBranch root left right)
-    | item < root = BinBranch root (addBinTree item left) right
-    | item > root = BinBranch root left (addBinTree item right)
-    | otherwise   = BinBranch root left right
-addBinTree item BinEmpty = BinBranch item BinEmpty BinEmpty
 
 -- Test if a binary tree is a binary search tree, that is, the data in the left
 -- branch is less than the data in the current node, and the data in the right
