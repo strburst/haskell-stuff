@@ -15,20 +15,6 @@ data BinTree a = BinEmpty
                | BinBranch a (BinTree a) (BinTree a)
                deriving (Eq, Show)
 
-binTree1 = BinBranch 2
-    (BinBranch 1 BinEmpty BinEmpty)
-    (BinBranch 3 BinEmpty BinEmpty)
-
-binTree2 = BinBranch 10
-    (BinBranch 5
-        (BinBranch 4 BinEmpty BinEmpty)
-        (BinBranch 6 BinEmpty BinEmpty))
-    (BinBranch 15
-        (BinBranch 14 BinEmpty BinEmpty)
-        BinEmpty)
-
-binTree3 = foldl (flip add) BinEmpty [4,1,6,2,5,9]
-
 add :: (Ord a) => a -> BinTree a -> BinTree a
 add item (BinBranch root left right)
     | item < root = BinBranch root (add item left) right
