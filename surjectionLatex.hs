@@ -16,7 +16,8 @@ surjectionTerm :: Integer -> Integer -> Integer -> String
 surjectionTerm m k i = if i `mod` 2 == 0
     then "+ " ++ term
     else "- " ++ term
-        where term = (k `choose` i) ++ "(" ++ show k ++ " - " ++ show i ++ ")^{" ++ show m ++ "}"
+        where term = (k `choose` i) ++ "(" ++ show k ++ " - " ++ show i
+                        ++ ")^{" ++ show m ++ "}"
 
 choose :: Integer -> Integer -> String
 choose n k = "{" ++ show n ++ " \\choose " ++ show k ++ "}"
