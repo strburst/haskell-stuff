@@ -8,11 +8,11 @@ flatten []      = []
 flatten (xs:[]) = xs
 flatten (xs:ys) = xs ++ flatten ys
 
-fib2 n = fibs !! n
-         where fibs = 0 : scanl (+) 1 fibs
+curry3 :: ((a, b, c) -> d) -> a -> b -> c -> d
+curry3 f a b c = f (a, b, c)
 
--- uncurry3 :: ((a, b, c) -> d) -> (a -> b -> c -> d)
--- uncurry3 f =
+uncurry3 :: (a -> b -> c -> d) -> (a, b, c) -> d
+uncurry3 f (a, b, c) = f a b c
 
 dot :: Num a => [a] -> [a] -> a
 dot xs ys = foldr (+) 0 (zipWith (*) xs ys)
