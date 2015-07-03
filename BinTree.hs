@@ -1,4 +1,5 @@
 module BinTree (
+    BinTree (BinEmpty),
     add,
     makeTree,
     addAll,
@@ -8,7 +9,7 @@ module BinTree (
     minOf,
     maxOf,
     remove
-    ) where
+  ) where
 
 -- A typical binary tree, holding data and left/right branches
 data BinTree a = BinEmpty
