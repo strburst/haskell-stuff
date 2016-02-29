@@ -26,14 +26,9 @@ insert msg@(LogMessage _ time _) (Node left p@(LogMessage _ parentTime _) right)
       else (Node left p (insert msg right))
 insert _ (Node _ (Unknown _) _) = error "Invalid tree: has Unknown MessageType"
 
-testMsgTransform :: LogMessage -> LogMessage
-testMsgTransform (LogMessage Info time str) = LogMessage Warning time str
-testMsgTransform (LogMessage Warning time str) = LogMessage Info time str
-testMsgTransform msg = msg
+build :: [LogMessage] -> MessageTree
+build = foldr insert Leaf
 
-tokenIndex :: Int -> [[Char]] -> Int
-tokenIndex _ []     = 0
-tokenIndex 0 (y:_)  = 1 + length y
-tokenIndex _ (y:[]) = 1 + length y
-tokenIndex x (y:zs) = 1 + length y + tokenIndex (x-1) zs
-
+inOrder :: MessageTree -> [LogMessage]
+inOrder (Leaf) = []
+inOrder (Node left msg right) = (inorder left) ++ (msg : (inorder right))
