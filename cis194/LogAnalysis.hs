@@ -7,16 +7,15 @@ parse :: String -> [LogMessage]
 parse logs = map (parseMessage) (lines logs)
 
 parseMessage :: String -> LogMessage
-parseMessage msg
-    | tokens !! 0 == "I" = LogMessage Info token1 (unwords (drop 2 tokens))
-    | tokens !! 0 == "W" = LogMessage Warning token1 (unwords (drop 2 tokens))
-    | tokens !! 0 == "E" = LogMessage (Error token1) token2 (unwords (drop 3 tokens))
-    | otherwise          = Unknown msg
+parseMessage msg = case tokens of
+    ("I":_) -> LogMessage Info n1 (restAfter 2 tokens)
+    ("W":_) -> LogMessage Warning n1 (restAfter 2 tokens)
+    ("E":_) -> LogMessage (Error n1) n2 (restAfter 3 tokens)
+    _   -> Unknown msg
     where tokens = words msg
-          token1 = read (tokens !! 1) :: Int
-          token2 = read (tokens !! 2) :: Int
-          -- infoEndIW   = length (tokens !! 1) + 3
-          -- infoEndE    = (length (tokens !! 1)) + (length (tokens !! 2)) + 4
+          n1 = read (tokens !! 1) :: Int
+          n2 = read (tokens !! 2) :: Int
+          restAfter n wordList = unwords $ drop n wordList
 
 -- insert :: LogMessage -> MessageTree -> MessageTree
 -- insert msg (Leaf) = Node Leaf msg Leaf
