@@ -17,9 +17,14 @@ parseMessage msg = case tokens of
           n2 = read (tokens !! 2) :: Int
           restAfter n wordList = unwords $ drop n wordList
 
--- insert :: LogMessage -> MessageTree -> MessageTree
--- insert msg (Leaf) = Node Leaf msg Leaf
--- insert (LogMessage msgType time str) (Node Leaf (LogMessage parentMsgType parentTime parentStr) Leaf) =
+insert :: LogMessage -> MessageTree -> MessageTree
+insert (Unknown _) tree = tree
+insert msg (Leaf) = Node Leaf msg Leaf
+insert msg@(LogMessage _ time _) (Node left p@(LogMessage _ parentTime _) right)
+  = if (time <= parentTime)
+      then (Node (insert msg left) p right)
+      else (Node left p (insert msg right))
+insert _ (Node _ (Unknown _) _) = error "Invalid tree: has Unknown MessageType"
 
 testMsgTransform :: LogMessage -> LogMessage
 testMsgTransform (LogMessage Info time str) = LogMessage Warning time str
