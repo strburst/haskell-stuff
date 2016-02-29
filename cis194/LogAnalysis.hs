@@ -31,4 +31,13 @@ build = foldr insert Leaf
 
 inOrder :: MessageTree -> [LogMessage]
 inOrder (Leaf) = []
-inOrder (Node left msg right) = (inorder left) ++ (msg : (inorder right))
+inOrder (Node left msg right) = midjoin (inOrder left) msg (inOrder right)
+  where midjoin l elt r = l ++ (elt : r)
+
+whatWentWrong :: [LogMessage] -> [String]
+whatWentWrong = map message . filter isSevere
+  where isSevere msg = (severity msg) > 50
+        severity (LogMessage (Error sevlevel) _ _) = sevlevel
+        severity _                                 = 0
+        message (LogMessage _ _ msg) = msg
+        message (Unknown msg)        = msg
