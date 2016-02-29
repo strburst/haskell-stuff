@@ -32,6 +32,10 @@ uncurry3 f (a, b, c) = f a b c
 dot :: Num a => [a] -> [a] -> a
 dot xs ys = foldr (+) 0 (zipWith (*) xs ys)
 
+sublists :: [a] -> [[a]]
+sublists []       = []
+sublists x@(_:xs) = x : sublists xs
+
 main = do
     putStrLn "Hello world! Gimme three numbers!"
 

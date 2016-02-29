@@ -11,5 +11,9 @@ myAnd :: [Bool] -> Bool
 myAnd (b:bs) = b && myAnd bs
 myAnd []     = True
 
--- myAnd2 :: [Bool] -> Bool
--- myAnd2 xs = foldr (\
+myAnd2 :: [Bool] -> Bool
+myAnd2 xs = foldr (&&) True xs
+
+myAppend :: [a] -> [a] -> [a]
+myAppend (x:xs) ys = x : myAppend xs ys
+myAppend [] ys = ys

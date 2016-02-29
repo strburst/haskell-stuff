@@ -17,8 +17,9 @@ dot a b = sum $ zipWith (*) a b
 -- |Replace the words in a string with a list of frequencies corresponding to
 -- each word
 mapFreq :: (Num a) => String -> [a]
-mapFreq string = map (\word -> Map.findWithDefault 0 word counts) $ words string
-    where counts = wordCount string
+mapFreq string = map getCount $ words string
+    where counts        = wordCount string
+          getCount word = Map.findWithDefault 0 word counts
 
 -- |Count the occurrences of each word in the given string
 wordCount :: (Num a) => String -> Map.Map String a
@@ -26,7 +27,7 @@ wordCount = count . words
 
 -- |Count the number of times each item in a list
 count :: (Ord k, Num a) => [k] -> Map.Map k a
-count = foldr (incCount) Map.empty
+count = foldr incCount Map.empty
 
 -- |Increment the given key's value
 incCount :: (Ord k, Num a) => k -> Map.Map k a -> Map.Map k a
