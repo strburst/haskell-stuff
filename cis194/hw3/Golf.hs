@@ -12,7 +12,7 @@ everyNth n xs =
     else (xs !! (n - 1)) : everyNth n (drop n xs)
 
 localMaxima :: [Integer] -> [Integer]
-localMaxima xs = map mid $ filter lmax $ tupify3 xs
+localMaxima = map mid . filter lmax . tupify3
   where mid (x, y, z) = y
         lmax (x, y, z) = x < y && z < y
 
@@ -45,5 +45,5 @@ testToStr pred ifYes ifNo xs = map decide xs
   where decide x = if (pred x) then ifYes else ifNo
 
 showCat :: (Show a) => [a] -> [Char]
-showCat xs = foldr cat "" xs
+showCat = foldr cat ""
   where cat x acc = (show x) ++ acc
