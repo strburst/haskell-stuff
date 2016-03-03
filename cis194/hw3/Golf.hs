@@ -1,4 +1,4 @@
-module Golf where
+module Golf (skips, localMaxima, histogram) where
 
 import Data.List (intercalate)
 
